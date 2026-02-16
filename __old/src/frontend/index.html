@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hi Bella</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Caveat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Random gradient background that will fall with the form -->
+  <div class="gradient-bg" id="gradientBg"></div>
+
+  <!-- Signup Form (The Disguise) -->
+  <div class="form-container" id="formContainer">
+    <div class="form-card" id="formCard">
+      <h1 class="form-title">Join today</h1>
+      <form id="signupForm" autocomplete="off">
+        <div class="input-group" data-fall>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+        <div class="input-group" data-fall>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group" data-fall>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Create a password" autocomplete="new-password" required>
+        </div>
+        <div class="checkbox-group" data-fall>
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the <a href="#" id="termsLink">Terms &amp; Conditions</a></label>
+        </div>
+        <button type="submit" class="submit-btn" data-fall>Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- T&Cs Modal -->
+  <div class="modal-overlay" id="termsModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h2>Terms &amp; Conditions</h2>
+      <div class="modal-body">
+        <p><strong>1. General Agreement</strong></p>
+        <p>By proceeding, you acknowledge that you are entering into a (very legitimate) binding agreement with this platform. All rights reserved. Mostly.</p>
+        
+        <p><strong>2. Data Collection</strong></p>
+        <p>We collect the following: your name (to know what to call you), your email (for important updates that may or may not exist), and your password (which, honestly, we probably won't need).</p>
+        
+        <p><strong>3. User Conduct</strong></p>
+        <p>Users are expected to approach this experience with an open mind. Scepticism is permitted, though not encouraged. Trust the process.</p>
+        
+        <p><strong>4. Liability</strong></p>
+        <p>This platform assumes no responsibility for any unexpected feelings, sudden smiles, or moments of pause. These are features, not bugs.</p>
+        
+        <p><strong>5. Duration</strong></p>
+        <p>This agreement has no expiry date. Some things shouldn't have a timer on them.</p>
+        
+        <p><strong>6. Amendments</strong></p>
+        <p>These terms may be updated without notice, though they probably won't be. We're quite happy with how they turned out.</p>
+        
+        <p><strong>7. Final Clause</strong></p>
+        <p>If you've read this far, that says something. Just follow along, it'll be worthwhile (I -*ahem*, <b>'we'</b>- hope)!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Chance Reveal -->
+  <div class="reveal-container" id="revealContainer">
+    <p class="reveal-text" id="revealText">second chance?</p>
+    <svg class="arrow-svg" id="arrowSvg" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path id="arrowPath" d="M 25 5 C 18 20, 38 35, 32 55 C 30 62, 30 66, 30 70" 
+            stroke="#9b8e9e" stroke-width="1.8" stroke-linecap="round" fill="none"
+            style="stroke-dasharray: 120; stroke-dashoffset: 120;" />
+      <path id="arrowHead" d="M 24 63 L 30 72 L 36 63" 
+            stroke="#9b8e9e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"
+            style="stroke-dasharray: 30; stroke-dashoffset: 30;" />
+    </svg>
+    <button class="next-btn" id="nextBtn"></button>
+  </div>
+
+  <!-- ========================================
+       SCENE 2 — THE SETUP
+       ======================================== -->
+  <div class="scene2" id="scene2">
+    <div class="scene2-ambient" id="scene2Ambient"></div>
+    <div class="scene2-progress" id="scene2Progress">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="scene2-stage" id="scene2Stage"></div>
+    <div class="scene2-scroll" id="scene2Scroll">
+      <div class="scene2-scroll-content" id="scene2ScrollContent"></div>
+      <div class="scene2-continue" id="scene2Continue">
+        <p class="continue-hint">keep going</p>
+        <svg class="continue-arrow" viewBox="0 0 24 24" fill="none" stroke="#b0a0b8" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 5 L12 17 M7 13 L12 18 L17 13"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       SCENE 3 — CONNECT THE STARS / THE QUIZ
+       Falling through nebula → paper floats in sky
+       ======================================== -->
+  <div class="scene3" id="scene3">
+    <!-- Gradient transition layer (pastel → nebula) -->
+    <div class="scene3-gradient-bridge" id="scene3GradientBridge"></div>
+
+    <!-- Nebula sky -->
+    <div class="scene3-sky" id="scene3Sky">
+      <canvas class="scene3-stars" id="scene3Stars"></canvas>
+      <div class="scene3-nebula-glow scene3-nebula-1"></div>
+      <div class="scene3-nebula-glow scene3-nebula-2"></div>
+      <div class="scene3-nebula-glow scene3-nebula-3"></div>
+      <div class="scene3-nebula-glow scene3-nebula-4"></div>
+      <div class="scene3-nebula-glow scene3-nebula-5"></div>
+    </div>
+
+    <!-- Vignette -->
+    <div class="scene3-vignette"></div>
+
+    <!-- Paper (floats in the sky) -->
+    <div class="scene3-paper" id="scene3Paper">
+      <div class="scene3-paper-inner" id="scene3PaperInner">
+        <!-- Quiz content rendered by JS -->
+      </div>
+    </div>
+
+    <!-- "Nuh uh" flyby paper (hidden, triggered on Q2 sad answer) -->
+    <div class="nuhuh-paper" id="nuhuhPaper">
+      <div class="nuhuh-paper-inner">Nuh uh =D</div>
+    </div>
+
+    <!-- "sorry :(" flyby paper (hidden, triggered on each Q1 answer) -->
+    <div class="sorry-paper" id="sorryPaper">
+      <div class="sorry-paper-inner">sorry :(</div>
+    </div>
+
+    <!-- Pen (floats beside paper) -->
+    <div class="scene3-pen" id="scene3Pen">
+      <div class="scene3-pen-body">
+        <div class="pen-clip"></div>
+        <div class="pen-cap"></div>
+        <div class="pen-barrel"></div>
+        <div class="pen-grip"></div>
+        <div class="pen-tip"></div>
+      </div>
+    </div>
+
+    <!-- Fireflies (generated by JS) -->
+    <div class="scene3-fireflies" id="scene3Fireflies"></div>
+  </div>
+
+  <!-- GSAP -->
+  <script src="js/gsap.min.js"></script>
+  <script src="js/scene3.js"></script>
+  <script src="js/scene2.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

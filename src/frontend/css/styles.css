@@ -1,0 +1,218 @@
+/* ═══════════════════════════════════════════════
+   ANIMATED GRADIENT BACKGROUND
+   ═══════════════════════════════════════════════ */
+
+@property --bg-center {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #f5dce8;
+}
+
+@property --bg-edge {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #d4a0c0;
+}
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, var(--bg-center), var(--bg-edge));
+    transition: --bg-center 2.5s ease, --bg-edge 2.5s ease;
+    font-family: 'Caveat', cursive;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════ */
+
+.container {
+    width: 60vw;
+    max-width: 700px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   HORIZONTAL LINES
+   ═══════════════════════════════════════════════ */
+
+.line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(160, 120, 140, 0.35) 15%,
+        rgba(160, 120, 140, 0.45) 50%,
+        rgba(160, 120, 140, 0.35) 85%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.line.active {
+    opacity: 1;
+}
+
+.line.active::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(200, 160, 180, 0.2) 30%,
+        rgba(200, 160, 180, 0.4) 50%,
+        rgba(200, 160, 180, 0.2) 70%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: line-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes line-shimmer {
+    0%, 100% { background-position: -100% 0; }
+    50%      { background-position: 200% 0; }
+}
+
+/* ═══════════════════════════════════════════════
+   STAGE
+   ═══════════════════════════════════════════════ */
+
+.stage {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    /* Establish baseline alignment context */
+    display: flex;
+    align-items: center;
+}
+
+/* ═══════════════════════════════════════════════
+   WORDS  (each word absolutely positioned)
+   ═══════════════════════════════════════════════ */
+
+.word {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    color: rgba(80, 50, 65, 0.85);
+    white-space: nowrap;
+    will-change: left, filter, opacity;
+    line-height: 100px;
+}
+
+/* Individual letters inside each word */
+.word .letter {
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+
+.word .letter.visible {
+    opacity: 1;
+}
+
+/* Space between words rendered as a gap on .track,
+   but an actual space char inside '. . .' etc. */
+.word .letter.space {
+    width: 0.25em;
+}
+
+/* Emphasis: bolder, full opacity */
+.word.emphasis {
+    font-weight: 700;
+    color: rgba(80, 50, 65, 1);
+}
+
+/* Grow: scale up with animation */
+.word.grow {
+    animation: word-grow 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes word-grow {
+    from { transform: scale(1); }
+    to   { transform: scale(1.25); }
+}
+
+/* Italic */
+.word.italic {
+    font-style: italic;
+}
+
+/* Font: serif emphasis (for key phrases) */
+.word.font-emphasis {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3.2vw, 1.85rem);
+}
+
+/* Font: playful sans-serif (for light moments) */
+.word.font-playful {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.1rem, 3vw, 1.7rem);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .container {
+        width: 80vw;
+    }
+
+    .stage {
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90vw;
+    }
+
+    .stage {
+        height: 70px;
+    }
+}
+
+/* ═══════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+    .word,
+    .line {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
