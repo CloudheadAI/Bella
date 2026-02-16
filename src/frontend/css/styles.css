@@ -66,10 +66,32 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
+   GRADIENT BLOBS
+   ═══════════════════════════════════════════════ */
+
+#blobLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.gradient-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    will-change: transform, opacity;
+    transition: background 5s ease;
+}
+
+/* ═══════════════════════════════════════════════
    LAYOUT
    ═══════════════════════════════════════════════ */
 
 .container {
+    position: relative;
+    z-index: 1;
     width: 60vw;
     max-width: 700px;
     min-width: 280px;

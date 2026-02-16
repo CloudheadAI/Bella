@@ -24,13 +24,20 @@
     // ── Background phases ──────────────────────────────────
     // Subtle palette – colors drift gently between phases
     const PHASES = {
-        opening:     { center: '#f2dae5', mid: '#e4c8d6', edge: '#d6b8c8' },
-        selfaware:   { center: '#e8dced', mid: '#dac8de', edge: '#ccb8cf' },
-        admission:   { center: '#f0d5dc', mid: '#e2c2cc', edge: '#d5b2be' },
-        apology:     { center: '#e8d2e4', mid: '#dac0d6', edge: '#ccb0c8' },
-        philosophy:  { center: '#f0ddd2', mid: '#e2ccc0', edge: '#d5bdb2' },
-        realization: { center: '#dce8e2', mid: '#c8dad4', edge: '#b8ccc6' },
-        finale:      { center: '#efd0da', mid: '#e0beca', edge: '#d2aebc' },
+        opening:     { center: '#f2dae5', mid: '#e4c8d6', edge: '#d6b8c8',
+                       blobs: ['#f0d4e1', '#e8ccd8', '#ddc4d0', '#f2dce8', '#e0d0d8'] },
+        selfaware:   { center: '#e8dced', mid: '#dac8de', edge: '#ccb8cf',
+                       blobs: ['#d4c4f0', '#dcd0ea', '#c8bce0', '#e0d8ee', '#d0c8e4'] },
+        admission:   { center: '#f0d5dc', mid: '#e2c2cc', edge: '#d5b2be',
+                       blobs: ['#f0c4d4', '#e8bcc8', '#e0b4c0', '#f0d0da', '#e4c0cc'] },
+        apology:     { center: '#e8d2e4', mid: '#dac0d6', edge: '#ccb0c8',
+                       blobs: ['#e0d4f0', '#d8c8e4', '#d0c0dc', '#e4d0e8', '#dcc8e0'] },
+        philosophy:  { center: '#f0ddd2', mid: '#e2ccc0', edge: '#d5bdb2',
+                       blobs: ['#f0e4c4', '#e8dcc0', '#e0d4b8', '#f0e0cc', '#e4d8c0'] },
+        realization: { center: '#dce8e2', mid: '#c8dad4', edge: '#b8ccc6',
+                       blobs: ['#d4f0e0', '#c8e4d8', '#c0dcd0', '#d0e8dc', '#c4e0d4'] },
+        finale:      { center: '#efd0da', mid: '#e0beca', edge: '#d2aebc',
+                       blobs: ['#f0c8d8', '#e8c0cc', '#e0b8c4', '#ecc8d4', '#e4bcc8'] },
     };
 
     // ── Helper: build flat word array from sections ─────────
@@ -387,6 +394,74 @@
     // { el, width, currentX, targetX }
     let activeWords = [];
 
+    // ── Gradient blobs ──────────────────────────────────────
+    const blobLayer = document.getElementById('blobLayer');
+    const BLOB_COUNT = 6 + Math.floor(Math.random() * 3); // 6-8 blobs
+    const blobs = [];
+
+    function createBlobs() {
+        const colors = PHASES.opening.blobs;
+        for (let i = 0; i < BLOB_COUNT; i++) {
+            const el = document.createElement('div');
+            el.className = 'gradient-blob';
+
+            const size = 250 + Math.random() * 350;
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+            el.style.background = colors[i % colors.length];
+            el.style.opacity = (0.2 + Math.random() * 0.2).toFixed(2);
+
+            // Random starting position
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            el.style.left = x + '%';
+            el.style.top = y + '%';
+            el.style.transform = 'translate(-50%, -50%)';
+
+            blobLayer.appendChild(el);
+            blobs.push({
+                el: el,
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                size: size,
+            });
+        }
+    }
+
+    // Drift blobs slowly with random wandering
+    function driftBlobs(dt) {
+        for (let i = 0; i < blobs.length; i++) {
+            const b = blobs[i];
+
+            // Slight random acceleration
+            b.vx += (Math.random() - 0.5) * 0.02;
+            b.vy += (Math.random() - 0.5) * 0.02;
+
+            // Damping
+            b.vx *= 0.998;
+            b.vy *= 0.998;
+
+            // Clamp velocity
+            const maxV = 0.4;
+            b.vx = Math.max(-maxV, Math.min(maxV, b.vx));
+            b.vy = Math.max(-maxV, Math.min(maxV, b.vy));
+
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+
+            // Soft bounce off edges
+            if (b.x < -15) { b.x = -15; b.vx = Math.abs(b.vx) * 0.5; }
+            if (b.x > 115) { b.x = 115; b.vx = -Math.abs(b.vx) * 0.5; }
+            if (b.y < -15) { b.y = -15; b.vy = Math.abs(b.vy) * 0.5; }
+            if (b.y > 115) { b.y = 115; b.vy = -Math.abs(b.vy) * 0.5; }
+
+            b.el.style.left = b.x.toFixed(1) + '%';
+            b.el.style.top  = b.y.toFixed(1) + '%';
+        }
+    }
+
     // ── Phase transition ────────────────────────────────────
     function setPhase(name) {
         const p = PHASES[name];
@@ -394,6 +469,11 @@
         document.body.style.setProperty('--bg-center', p.center);
         document.body.style.setProperty('--bg-mid', p.mid);
         document.body.style.setProperty('--bg-edge', p.edge);
+
+        // Shift blob colors
+        for (let i = 0; i < blobs.length; i++) {
+            blobs[i].el.style.background = p.blobs[i % p.blobs.length];
+        }
     }
 
     // ── Recalculate all target positions ────────────────────
@@ -423,7 +503,8 @@
         if (!prevTime) prevTime = ts;
         const dt = Math.min(ts - prevTime, 50) / 1000; // seconds, capped
         prevTime = ts;
-
+        // Drift background blobs
+        driftBlobs(dt);
         const stageW  = stage.offsetWidth;
         const center  = stageW / 2;
         const maxDist = stageW * FADE_ZONE;
@@ -565,6 +646,7 @@
     // ══════════════════════════════════════════════════════════
 
     setPhase('opening');
+    createBlobs();
 
     // Wait for all fonts to load before measuring word widths
     document.fonts.ready.then(function () {
