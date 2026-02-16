@@ -5,13 +5,28 @@
 @property --bg-center {
     syntax: '<color>';
     inherits: false;
-    initial-value: #f5dce8;
+    initial-value: #f2dae5;
+}
+
+@property --bg-mid {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #e4c8d6;
 }
 
 @property --bg-edge {
     syntax: '<color>';
     inherits: false;
-    initial-value: #d4a0c0;
+    initial-value: #d6b8c8;
+}
+
+/* Slow drifting gradient origin */
+@keyframes gradientDrift {
+    0%   { background-position: 50% 50%; }
+    25%  { background-position: 45% 55%; }
+    50%  { background-position: 55% 45%; }
+    75%  { background-position: 50% 55%; }
+    100% { background-position: 50% 50%; }
 }
 
 /* ═══════════════════════════════════════════════
@@ -34,8 +49,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(ellipse at center, var(--bg-center), var(--bg-edge));
-    transition: --bg-center 2.5s ease, --bg-edge 2.5s ease;
+    background:
+        radial-gradient(
+            ellipse 120% 120% at 50% 50%,
+            var(--bg-center) 0%,
+            var(--bg-mid) 45%,
+            var(--bg-edge) 100%
+        );
+    background-size: 200% 200%;
+    animation: gradientDrift 18s ease-in-out infinite;
+    transition:
+        --bg-center 4s cubic-bezier(0.4, 0, 0.2, 1),
+        --bg-mid    4s cubic-bezier(0.4, 0, 0.2, 1),
+        --bg-edge   4s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'Caveat', cursive;
 }
 

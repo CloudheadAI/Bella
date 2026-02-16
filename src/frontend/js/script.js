@@ -22,14 +22,15 @@
     const FINAL_HOLD     = 4000;  // ms to hold after last word before fade
 
     // ── Background phases ──────────────────────────────────
+    // Subtle palette – colors drift gently between phases
     const PHASES = {
-        opening:     { center: '#f5dce8', edge: '#d4a0c0' },
-        selfaware:   { center: '#dde4f0', edge: '#b8c4d8' },
-        admission:   { center: '#f0d0d8', edge: '#d4a0b0' },
-        apology:     { center: '#e0d0e8', edge: '#c0a8c8' },
-        philosophy:  { center: '#f5e0d0', edge: '#d8c0a8' },
-        realization: { center: '#d0f0e8', edge: '#a8d8c8' },
-        finale:      { center: '#f0c8d8', edge: '#d898b0' },
+        opening:     { center: '#f2dae5', mid: '#e4c8d6', edge: '#d6b8c8' },
+        selfaware:   { center: '#e8dced', mid: '#dac8de', edge: '#ccb8cf' },
+        admission:   { center: '#f0d5dc', mid: '#e2c2cc', edge: '#d5b2be' },
+        apology:     { center: '#e8d2e4', mid: '#dac0d6', edge: '#ccb0c8' },
+        philosophy:  { center: '#f0ddd2', mid: '#e2ccc0', edge: '#d5bdb2' },
+        realization: { center: '#dce8e2', mid: '#c8dad4', edge: '#b8ccc6' },
+        finale:      { center: '#efd0da', mid: '#e0beca', edge: '#d2aebc' },
     };
 
     // ── Helper: build flat word array from sections ─────────
@@ -391,6 +392,7 @@
         const p = PHASES[name];
         if (!p) return;
         document.body.style.setProperty('--bg-center', p.center);
+        document.body.style.setProperty('--bg-mid', p.mid);
         document.body.style.setProperty('--bg-edge', p.edge);
     }
 
