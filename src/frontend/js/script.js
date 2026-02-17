@@ -10,7 +10,7 @@
     // ── Speed constants (ms a word stays in focus) ──────────
     const VS = 1000;   // very slow  – climactic ("I love you Bella,")
     const S  = 620;    // slow       – emphatic key words
-    const M  = 400;    // medium     – comfortable reading pace
+    const M  = 440;    // medium     – comfortable reading pace
     const MF = 300;    // med-fast   – brisk flowing passages
     const F  = 200;    // fast       – rushing stream of words
 
@@ -76,16 +76,16 @@
         // ─── OPENING  (soft lavender-pink) ───────────────────
         {
             phase: 'opening',
-            defaults: { speed: M },
+            defaults: { speed: S },
             words: [
                 { text: 'Bella.', speed: S, pauseAfter: 1500, emphasis: true, grow: true },
                 { text: 'Hi.', speed: S, pauseAfter: 1000 },
-                "I'd", 'like', 'to', 'begin', 'by',
-                { text: 'acknowledging', speed: M, pauseAfter: 100 },
-                'that', 'this', 'is',
+                "I'd like to begin",
+                { text: 'by acknowledging', speed: S, pauseAfter: 100 },
+                'that this is',
                 { text: '. . .', speed: VS, pauseAfter: 700 },
                 { text: 'unusual?', speed: S, emphasis: true, pauseAfter: 500 },
-                'But', "you're", 'here',
+                "But you're here",
                 { text: 'now,', speed: S }, 'so',
                 'please',
                 'stay',
